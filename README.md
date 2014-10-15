@@ -17,24 +17,24 @@ Author : Teruaki Tsubokura (<http://teruaki-tsubokura.com/>)
 * Arrow key : Move Corners/Anchors. (selected control point)
 
 ## Usage
-### 1. Import to your project.
-### 2. Setup and add FBO.
+#### 1. Import to your project.
+#### 2. Setup and add FBO.
 ```
 bezManager.setup(10); //WarpResolution
 first_fbo.allocate(1920, 1080);
 bezManager.addFbo(&first_fbo);
 ```
-### 3. Draw to FBO between "begin()" and "end()"
+#### 3. Draw to FBO between "begin()" and "end()"
 ```
 first_fbo.begin();
 _mov.draw(0,0,1920,1080);
 first_fbo.end();
 ```
-### 4. Draw ofxBezierWarpManager.
+#### 4. Draw ofxBezierWarpManager.
 ```
 bezManager.draw();
 ```
-### 5. Add key/mouse events.
+#### 5. Add key/mouse events.
 ```
 void ofApp::keyPressed(int key){
     bezManager.keyPressed(key);
