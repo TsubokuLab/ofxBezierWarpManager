@@ -1,4 +1,4 @@
-#ofxContrast
+#ofxBezierWarpManager
 
 This addon is manager for multiple ofxBezierWarp.
 
@@ -6,5 +6,5 @@ This addon is manager for multiple ofxBezierWarp.
 
 Author : Teruaki Tsubokura (<http://teruaki-tsubokura.com/>)
 
-![ofxBezierWarpManger](https://github.com/TsubokuLab/ofxBezierWarpManger/raw/master/screenshot/ofxBezierWarpManger.png)
+![ofxBezierWarpManager](https://github.com/TsubokuLab/ofxBezierWarpManager/raw/master/screenshot/ofxBezierWarpManager.png)
 
