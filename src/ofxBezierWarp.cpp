@@ -460,7 +460,7 @@ void ofxBezierWarp::setCanvasSize(int _width, int _height){
     }
 }
 
-void ofxBezierWarp::setGridResolution(int _res){
+void ofxBezierWarp::setWarpResolution(int _res){
     if(_res > 0 && _res < 100){
         gridRes = _res;
     }else{

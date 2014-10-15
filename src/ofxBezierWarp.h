@@ -40,7 +40,7 @@ public:
     Boolean isSelected();
     
     void setCanvasSize(int _width, int _height);
-    void setGridResolution(int _res);
+    void setWarpResolution(int _res);
     void setGridVisible(bool _visible);
     
 private:

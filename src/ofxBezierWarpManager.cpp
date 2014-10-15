@@ -6,6 +6,16 @@ ofxBezierWarpManager::ofxBezierWarpManager(){
 }
 
 //--------------------------------------------------------------
+void ofxBezierWarpManager::setup(int _resolution){
+    warpResolution = _resolution;
+}
+
+//--------------------------------------------------------------
+void ofxBezierWarpManager::setWarpResolution(int _resolution){
+    warpResolution = _resolution;
+}
+
+//--------------------------------------------------------------
 void ofxBezierWarpManager::draw(){
     for (int i = 0; i < 4; i++) {
         bezierList[i].draw();
@@ -43,6 +53,7 @@ void ofxBezierWarpManager::mousePressed(int x, int y, int button){
 void ofxBezierWarpManager::addFbo(ofFbo* _fbo){
     ofxBezierWarp _bezier;
     _bezier.setup(_fbo);
+    _bezier.setWarpResolution(warpResolution);
     bezierList.push_back(_bezier);
 }
 

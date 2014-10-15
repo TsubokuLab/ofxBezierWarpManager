@@ -18,8 +18,9 @@ Author : Teruaki Tsubokura (<http://teruaki-tsubokura.com/>)
 
 ## Usage
 1. Import to your project.
-2. Add FBO for Bezier Warp.
+2. Setup and add FBO.
 ```
+bezManager.setup(10); //WarpResolution
 first_fbo.allocate(1920, 1080);
 bezManager.addFbo(&first_fbo);
 ```

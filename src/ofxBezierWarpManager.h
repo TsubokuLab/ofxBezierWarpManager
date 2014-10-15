@@ -14,6 +14,9 @@ class ofxBezierWarpManager{
 
 	public:
         ofxBezierWarpManager();
+    
+        void setup(int _resolution = 10);
+        void setWarpResolution(int _resolution);
 		void draw();
 
 		void keyPressed(int key);
@@ -35,6 +38,6 @@ class ofxBezierWarpManager{
     
     vector<ofxBezierWarp> bezierList;
     
-    
+    int warpResolution;
     bool bGuide;
 };
