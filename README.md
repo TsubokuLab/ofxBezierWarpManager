@@ -8,6 +8,14 @@ Author : Teruaki Tsubokura (<http://teruaki-tsubokura.com/>)
 
 ![ofxBezierWarpManager](https://github.com/TsubokuLab/ofxBezierWarpManager/raw/master/screenshot/ofxBezierWarpManager.png)
 
+## Example project
+* [ENTER] key : Toggle guide visible.
+* [S] key : Save settings.
+* [L] key : Load settings.
+* Left drag the control point : Move Corners/Anchors.
+* Right click the control point : Toggle Bezier/Homoglaphy mode.
+* Arrow key : Move Corners/Anchors. (selected control point)
+
 ## Usage
 1. Import to your project.
 2. Add FBO for Bezier Warp.
@@ -46,11 +54,3 @@ void ofApp::mousePressed(int x, int y, int button){
     bezManager.mousePressed(x, y, button);
 }
 ```
-
-## Example project
-* [ENTER] key : Toggle guide visible.
-* [S] key : Save settings.
-* [L] key : Load settings.
-* Left drag the control point : Move Corners/Anchors.
-* Right click the control point : Toggle Bezier/Homoglaphy mode.
-* Arrow key : Move Corners/Anchors. (selected control point)
