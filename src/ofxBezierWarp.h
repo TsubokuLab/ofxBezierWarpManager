@@ -22,6 +22,7 @@ public:
 	ofPoint anchors[8];
     ofPoint center;
 	int gridRes = 0;
+    int prev_gridRes = 0;
     int mouseON, spritesON, anchorControl;
     int selectedSprite[4], selectedControlPoint[8], selectedCenter;
     bool showGrid;
@@ -42,6 +43,7 @@ public:
     void setCanvasSize(int _width, int _height);
     void setWarpResolution(int _res);
     void setGridVisible(bool _visible);
+    bool bGradient;
     
 private:
 	int mousePosX, mousePosY, rad;

@@ -10,6 +10,7 @@ void ofApp::setup(){
     third_fbo.allocate(1920, 1080);
     fourth_fbo.allocate(1920, 1080);
     
+    bezManager.setup(10); //WarpResolution
     bezManager.addFbo(&first_fbo);
     bezManager.addFbo(&second_fbo);
     bezManager.addFbo(&third_fbo);
@@ -49,11 +50,12 @@ void ofApp::draw(){
     // ベジエワープ描画
     bezManager.draw();
     
-    string _help = "[ENTER] : Toggle guide visible.\n";
-    _help += "[S] : Save settings.\n";
-    _help += "[L] : Load settings.\n";
-    _help += "LEFT CLICK : Move Corners/Anchors.\n";
-    _help += "RIGHT CLICK : Toggle bezier/homoglaphy mode.\n";
+    string _help = "[ENTER] key : Toggle guide visible.\n";
+    _help += "[S] key : Save settings.\n";
+    _help += "[L] key : Load settings.\n";
+    _help += "Left drag the control point : Move Corners/Anchors.\n";
+    _help += "Right click the control point : Toggle bezier/homoglaphy mode.\n";
+    _help += "Arrow key : Move Corners/Anchors. (selected control point)\n";
     ofDrawBitmapString(_help, 10, 20);
 }
 
@@ -66,7 +68,6 @@ void ofApp::keyPressed(int key){
     if(key == OF_KEY_RETURN){
         bezManager.toggleGuideVisible();
     }
-    
     // 設定保存
     if(key == 's'){
         bezManager.saveSettings();

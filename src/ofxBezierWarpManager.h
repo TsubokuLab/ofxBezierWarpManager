@@ -32,12 +32,16 @@ class ofxBezierWarpManager{
     void saveSettings();
     void loadSettings();
     
-    void setGuideVisible(bool _visible);
-    void toggleGuideVisible();
-
+    void setGuideVisible(bool _visible, int _bezierNum = -1);
+    void toggleGuideVisible(int _bezierNum = -1);
     
     vector<ofxBezierWarp> bezierList;
+    vector<ofxBezierWarp> maskList;
     
     int warpResolution;
-    bool bGuide;
+    bool bBezierGuide;
+    bool bGradient;
+    ofImage gradientImg;
+    ofFbo gradientFbo;
+    ofFbo blackFbo;
 };

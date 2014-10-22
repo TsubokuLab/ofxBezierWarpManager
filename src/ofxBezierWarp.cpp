@@ -28,15 +28,16 @@ void ofxBezierWarp::setup(int _width, int _height, int grid, int _layer) {
     width = _width;
 	height = _height;
     no = _layer;
-	gridRes = grid;
+
 	mouseON = 1;
 	spritesON = 1;
-	anchorControl = 0;
+    anchorControl = 0;
+    gridRes = grid;
+    prev_gridRes = gridRes;
 	rad = 10;
     showGrid = false;
     
 	defaults();
-    ofLogNotice("[ofxBezierWarp] setup()");
 }
 
 // resets control points to default position
@@ -79,7 +80,7 @@ void ofxBezierWarp::draw() {
     if(spritesON == 1){
         ofPushStyle();
         fbo->begin();
-        drawGrid(16, 9);
+        drawGrid(gridRes, gridRes);
         fbo->end();
         ofPopStyle();
     }
@@ -214,7 +215,11 @@ void ofxBezierWarp::sprites() {
                 ofSetLineWidth(2);
                 ofSetColor(0, 255, 0);
                 if((i % 2) == 0) {
-                    ofBezier(corners[i/2].x, corners[i/2].y, anchors[(i+1) % 8].x, anchors[(i+1) % 8].y, anchors[(i+2) % 8].x, anchors[(i+2) % 8].y, corners[((i/2)+1) % 4].x, corners[((i/2)+1) % 4].y);
+                    if(anchorControl == 1){
+                        ofBezier(corners[i/2].x, corners[i/2].y, anchors[(i+1) % 8].x, anchors[(i+1) % 8].y, anchors[(i+2) % 8].x, anchors[(i+2) % 8].y, corners[((i/2)+1) % 4].x, corners[((i/2)+1) % 4].y);
+                    }else{
+                        ofLine(corners[i/2].x, corners[i/2].y, corners[((i/2)+1) % 4].x, corners[((i/2)+1) % 4].y);
+                    }
                 }
                 ofPopStyle();
             } else {
@@ -235,7 +240,11 @@ void ofxBezierWarp::sprites() {
                 ofSetColor(0, 255, 0);
                 if(selectedCenter) ofSetColor(255, 100, 0);
                 if((i % 2) == 0) {
-                    ofBezier(corners[i/2].x, corners[i/2].y, anchors[(i+1) % 8].x, anchors[(i+1) % 8].y, anchors[(i+2) % 8].x, anchors[(i+2) % 8].y, corners[((i/2)+1) % 4].x, corners[((i/2)+1) % 4].y);
+                    if(anchorControl == 1){
+                        ofBezier(corners[i/2].x, corners[i/2].y, anchors[(i+1) % 8].x, anchors[(i+1) % 8].y, anchors[(i+2) % 8].x, anchors[(i+2) % 8].y, corners[((i/2)+1) % 4].x, corners[((i/2)+1) % 4].y);
+                    }else{
+                        ofLine(corners[i/2].x, corners[i/2].y, corners[((i/2)+1) % 4].x, corners[((i/2)+1) % 4].y);
+                    }
                 }
                 ofPopStyle();
             }
@@ -345,9 +354,11 @@ void ofxBezierWarp::mousePressed(int x, int y, int button) {
             for(int i = 0; i < 4; i++) {
                 //
                 if(selectedSprite[i] == 0) {
-                    if((mousePosX > corners[i].x - (rad)) && (mousePosX < corners[i].x + (rad)) && (mousePosY >  corners[i].y - (rad)) && (mousePosY <  corners[i].y + (rad))) {
+                    if((x > corners[i].x - (rad)) && (x < corners[i].x + (rad)) && (y >  corners[i].y - (rad)) && (y <  corners[i].y + (rad))) {
                         if(button == 0){
                             selectedSprite[i] = 1;
+                            mousePosX = corners[i].x;
+                            mousePosY = corners[i].y;
                         }else{
                             if(anchorControl == 0){
                                 anchorControl = 1;
@@ -361,15 +372,19 @@ void ofxBezierWarp::mousePressed(int x, int y, int button) {
             for(int i = 0; i < 8; i++) {
                 //
                 if(selectedControlPoint[i] == 0 && anchorControl == 1) {
-                    if((mousePosX > anchors[i].x - (rad/2)) && (mousePosX < anchors[i].x + (rad/2)) && (mousePosY >  anchors[i].y - (rad/2)) && (mousePosY <  anchors[i].y + (rad/2))) {
+                    if((x > anchors[i].x - (rad/2)) && (x < anchors[i].x + (rad/2)) && (y >  anchors[i].y - (rad/2)) && (y <  anchors[i].y + (rad/2))) {
                         selectedControlPoint[i] = 1;
+                        mousePosX = anchors[i].x;
+                        mousePosY = anchors[i].y;
                     }
                 }
             }
             if(selectedCenter == 0){
-                if((mousePosX > center.x - (rad*2)) && (mousePosX < center.x + (rad*2)) && (mousePosY >  center.y - (rad*2)) && (mousePosY <  center.y + (rad*2))) {
+                if((x > center.x - (rad*2)) && (x < center.x + (rad*2)) && (y >  center.y - (rad*2)) && (y <  center.y + (rad*2))) {
                     if(button == 0){
                         selectedCenter = 1;
+                        mousePosX = center.x;
+                        mousePosY = center.y;
                     }else{
                         if(anchorControl == 0){
                             anchorControl = 1;
@@ -380,6 +395,13 @@ void ofxBezierWarp::mousePressed(int x, int y, int button) {
                 }
             }
         }
+        /*
+        if(anchorControl == 0){
+            gridRes = 1;
+        }else{
+            gridRes = prev_gridRes;
+        }
+         */
     }
 }
 
@@ -406,30 +428,6 @@ void ofxBezierWarp::keyPressed(int key) {
         case OF_KEY_DOWN:
             mousePosY++;
             break;
-        /*
-		case 'd':
-			defaults();
-			break;
-		case 'l':
-			load();
-			break;
-		case 'a':
-            if(isSelected()){
-                switch(anchorControl) {
-                    case 1:
-                        anchorControl = 0;
-                        resetAnchors();
-                        break;
-                    case 0:
-                        anchorControl = 1;
-                        break;
-                }
-            }
-			break;
-		case 's':
-			save();
-			break;
-         */
 	}
 }
 
@@ -439,11 +437,6 @@ Boolean ofxBezierWarp::isSelected(){
     for (int i=0; i<4; i++) {
         _sum += selectedSprite[i];
     }
-    /*
-    for (int i=0; i<8; i++) {
-        _sum += selectedControlPoint[i];
-    }
-     */
     if(_sum > 0){
         return true;
     }else{
@@ -463,6 +456,7 @@ void ofxBezierWarp::setCanvasSize(int _width, int _height){
 void ofxBezierWarp::setWarpResolution(int _res){
     if(_res > 0 && _res < 100){
         gridRes = _res;
+        prev_gridRes = gridRes;
     }else{
         ofLogWarning("[ofxBezierWarp] setGridResolution : Resolution must be between 0 - 100.");
     }
@@ -482,25 +476,15 @@ void ofxBezierWarp::drawGrid(float _stepX, float _stepY)
     float perY = h / _stepY;
     
     ofPushStyle();
-    
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
     for( int y = 0; y <= h; y+=perY){
-        //if(y%4 == 0){
-            ofSetColor(255, 255, 255, 60);
-            ofSetLineWidth(4);
-        //}else{
-        //    ofSetColor(255, 255, 255, 40);
-        //    ofSetLineWidth(2);
-        //}
+        ofSetColor(255, 255, 255, 100);
+        ofSetLineWidth(4);
         ofLine(0, y, w, y);
     }
     for( int x = 0; x <= w; x+=perX){
-        //if(x%4 == 0){
-            ofSetColor(255, 255, 255, 60);
-            ofSetLineWidth(4);
-        //}else{
-        //    ofSetColor(255, 255, 255, 40);
-        //    ofSetLineWidth(2);
-        //}
+        ofSetColor(255, 255, 255, 100);
+        ofSetLineWidth(4);
         ofLine(x, 0, x, h);
     }
     ofPopStyle();

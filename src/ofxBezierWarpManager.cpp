@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 ofxBezierWarpManager::ofxBezierWarpManager(){
-    bGuide = true;
+    bBezierGuide = true;
 }
 
 //--------------------------------------------------------------
@@ -17,7 +17,8 @@ void ofxBezierWarpManager::setWarpResolution(int _resolution){
 
 //--------------------------------------------------------------
 void ofxBezierWarpManager::draw(){
-    for (int i = 0; i < 4; i++) {
+    // ベジエワープ描画
+    for (int i = 0; i < bezierList.size(); i++) {
         bezierList[i].draw();
     }
 }
@@ -51,6 +52,7 @@ void ofxBezierWarpManager::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofxBezierWarpManager::addFbo(ofFbo* _fbo){
+    cout << "[ofxBezierWarpManager] addFbo(ofFbo* _fbo)" << endl;
     ofxBezierWarp _bezier;
     _bezier.setup(_fbo);
     _bezier.setWarpResolution(warpResolution);
@@ -65,6 +67,7 @@ void ofxBezierWarpManager::removeFbo(){
 //--------------------------------------------------------------
 void ofxBezierWarpManager::clear(){
     bezierList.clear();
+    maskList.clear();
 }
 
 //--------------------------------------------------------------
@@ -72,8 +75,11 @@ void ofxBezierWarpManager::saveSettings(){
     //SCREEN設定
     ofxXmlSettings _xml;
 	int lastTagNumber;
+    // screen
     for (int m = 0; m < bezierList.size(); m++) {
         lastTagNumber = _xml.addTag("SCREEN");
+        _xml.setValue("SCREEN:IS_BEZIER", (int)bezierList[m].anchorControl, lastTagNumber);
+        _xml.setValue("SCREEN:RESOLUTION", (int)bezierList[m].prev_gridRes, lastTagNumber);
         if( _xml.pushTag("SCREEN", lastTagNumber) ){
             for (int c = 0; c < 4; c++) {
                 int tagNum = _xml.addTag("CORNER");
@@ -105,7 +111,7 @@ void ofxBezierWarpManager::loadSettings(){
     
 	int numMovieTags = _xml.getNumTags("SCREEN");
     
-    //画面数が足りない場合は増やす
+    // screen
 	for(int n = bezierList.size(); n < numMovieTags; n++){
         //Bezier追加
         ofxBezierWarp _bezier;
@@ -115,6 +121,11 @@ void ofxBezierWarpManager::loadSettings(){
 		_xml.pushTag("SCREEN", m);
         ofLog(OF_LOG_NOTICE," SCREEN:" + ofToString(m));
         
+        bezierList[m].anchorControl = _xml.getValue("IS_BEZIER", 0);
+        bezierList[m].gridRes = _xml.getValue("RESOLUTION", 10);
+        bezierList[m].prev_gridRes = bezierList[m].gridRes;
+        ofLog(OF_LOG_NOTICE," IS_BEZIER:" + ofToString(bezierList[m].anchorControl));
+        ofLog(OF_LOG_NOTICE," RESOLUTION:" + ofToString(bezierList[m].prev_gridRes));
 		int numCornerTags = _xml.getNumTags("CORNER");
 		for(int i = 0; i < numCornerTags; i++){
 			int x = _xml.getValue("CORNER:X", 0, i);
@@ -136,17 +147,23 @@ void ofxBezierWarpManager::loadSettings(){
 }
 
 //--------------------------------------------------------------
-void ofxBezierWarpManager::setGuideVisible(bool _visible){
-    bGuide = _visible;
-    for( int i = 0; i < bezierList.size(); i++){
-        bezierList[i].setGridVisible(bGuide);
+void ofxBezierWarpManager::setGuideVisible(bool _visible, int _bezierNum){
+    if(_bezierNum <= -1){
+        bBezierGuide = _visible;
+        for( int i = 0; i < bezierList.size(); i++){
+            bezierList[i].setGridVisible(bBezierGuide);
+        }
+    }else{
+        for( int i = 0; i < bezierList.size(); i++){
+            if(i == _bezierNum) bezierList[i].setGridVisible(_visible);
+        }
     }
 }
 
 //--------------------------------------------------------------
-void ofxBezierWarpManager::toggleGuideVisible(){
-    bGuide = !bGuide;
+void ofxBezierWarpManager::toggleGuideVisible(int _bezierNum){
+    bBezierGuide = !bBezierGuide;
     for( int i = 0; i < bezierList.size(); i++){
-        bezierList[i].setGridVisible(bGuide);
+        bezierList[i].setGridVisible(bBezierGuide);
     }
 }
