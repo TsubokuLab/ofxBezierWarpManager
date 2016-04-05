@@ -13,21 +13,26 @@
 #include "ofMain.h"
 
 class ofxBezierWarp{
-			
+
 public:
-    int no = 0;
-    int layer = 0;
+    int no;
+    int layer;
     ofFbo *fbo;
 	ofPoint corners[4];
 	ofPoint anchors[8];
     ofPoint center;
-	int gridRes = 0;
-    int prev_gridRes = 0;
+	int gridRes;
+    int prev_gridRes;
     int mouseON, spritesON, anchorControl;
     int selectedSprite[4], selectedControlPoint[8], selectedCenter;
     bool showGrid;
 		
-	ofxBezierWarp(){}
+	ofxBezierWarp() {
+		no = 0;
+		layer = 0;
+		gridRes = 0;
+		prev_gridRes = 0;
+	}
 	
     void setup(ofFbo* _fbo);
     void draw();

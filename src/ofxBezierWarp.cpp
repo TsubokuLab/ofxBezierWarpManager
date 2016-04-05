@@ -85,10 +85,10 @@ void ofxBezierWarp::draw() {
         ofPopStyle();
     }
     
-    // fbo未設定時は描画せずに終了
+    // when fbo is null
     if(!fbo) return;
     
-    // ベジエ画像描画
+    // draw bezier
     draw(fbo->getTextureReference());
 }
 

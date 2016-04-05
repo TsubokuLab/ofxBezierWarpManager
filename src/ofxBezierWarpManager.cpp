@@ -17,7 +17,7 @@ void ofxBezierWarpManager::setWarpResolution(int _resolution){
 
 //--------------------------------------------------------------
 void ofxBezierWarpManager::draw(){
-    // ベジエワープ描画
+    // draw bezier
     for (int i = 0; i < bezierList.size(); i++) {
         bezierList[i].draw();
     }
@@ -72,8 +72,8 @@ void ofxBezierWarpManager::clear(){
 
 //--------------------------------------------------------------
 void ofxBezierWarpManager::saveSettings(){
-    //SCREEN設定
-    ofxXmlSettings _xml;
+    //screen settings
+    ofxXmlSettings _xml = ofxXmlSettings();
 	int lastTagNumber;
     // screen
     for (int m = 0; m < bezierList.size(); m++) {
@@ -113,7 +113,7 @@ void ofxBezierWarpManager::loadSettings(){
     
     // screen
 	for(int n = bezierList.size(); n < numMovieTags; n++){
-        //Bezier追加
+        // add bezier
         ofxBezierWarp _bezier;
         bezierList.push_back(_bezier);
     }
