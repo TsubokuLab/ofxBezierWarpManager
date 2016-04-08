@@ -17,6 +17,7 @@ class ofxBezierWarpManager{
     
         void setup(int _resolution = 10);
         void setWarpResolution(int _resolution);
+		void update(); // if you need
 		void draw();
 
 		void keyPressed(int key);

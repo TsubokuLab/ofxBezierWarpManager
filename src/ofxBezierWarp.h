@@ -35,7 +35,8 @@ public:
 	}
 	
     void setup(ofFbo* _fbo);
-    void draw();
+	void update(); // if you need
+	void draw();
 	
     void resetAnchors();
 	void save();

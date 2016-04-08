@@ -16,6 +16,14 @@ void ofxBezierWarpManager::setWarpResolution(int _resolution){
 }
 
 //--------------------------------------------------------------
+void ofxBezierWarpManager::update() {
+	// update bezier
+	for (int i = 0; i < bezierList.size(); i++) {
+		bezierList[i].update();
+	}
+}
+
+//--------------------------------------------------------------
 void ofxBezierWarpManager::draw(){
     // draw bezier
     for (int i = 0; i < bezierList.size(); i++) {
@@ -162,8 +170,16 @@ void ofxBezierWarpManager::setGuideVisible(bool _visible, int _bezierNum){
 
 //--------------------------------------------------------------
 void ofxBezierWarpManager::toggleGuideVisible(int _bezierNum){
-    bBezierGuide = !bBezierGuide;
-    for( int i = 0; i < bezierList.size(); i++){
-        bezierList[i].setGridVisible(bBezierGuide);
-    }
+
+	if (_bezierNum <= -1) {
+		bBezierGuide = !bBezierGuide;
+		for (int i = 0; i < bezierList.size(); i++) {
+			bezierList[i].setGridVisible(bBezierGuide);
+		}
+	}
+	else {
+		for (int i = 0; i < bezierList.size(); i++) {
+			if (i == _bezierNum) bezierList[i].setGridVisible(!bezierList[i].showGrid);
+		}
+	}
 }

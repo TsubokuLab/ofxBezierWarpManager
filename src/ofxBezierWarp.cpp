@@ -76,6 +76,21 @@ void ofxBezierWarp::resetAnchors(){
     }
 }
 
+void ofxBezierWarp::update() {
+	if (anchorControl == 0) {
+		// not bezier
+		for (int i = 0; i < 4; i++) {
+			anchors[i * 2] = corners[i] + (corners[(i + 3) % 4] - corners[i]) / 3;
+			anchors[i * 2 + 1] = corners[i] + (corners[(i + 1) % 4] - corners[i]) / 3;
+			anchors[(i * 2 + 7) % 8] = corners[i] + (corners[(i + 3) % 4] - corners[i]) / 3 * 2;
+			anchors[(i * 2 + 2) % 8] = corners[i] + (corners[(i + 1) % 4] - corners[i]) / 3 * 2;
+		}
+	} else {
+		// bezier
+
+	}
+}
+
 void ofxBezierWarp::draw() {
     if(spritesON == 1){
         ofPushStyle();
