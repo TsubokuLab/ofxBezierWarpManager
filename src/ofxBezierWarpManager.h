@@ -30,6 +30,7 @@ class ofxBezierWarpManager{
     void removeFbo();
     void clear();
     
+    void nextHandle();
     void saveSettings();
     void loadSettings();
     

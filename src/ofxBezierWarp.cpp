@@ -76,6 +76,35 @@ void ofxBezierWarp::resetAnchors(){
     }
 }
 
+void ofxBezierWarp::nextHandle(){
+    for(int i = 0; i < 4; i++) {
+        selectedSprite[i] = 0;
+        if ((i % 3) == 0) {
+            selectedSprite[i] = 1;
+            mousePosX = corners[i].x;
+            mousePosY = corners[i].y;
+        }
+    }
+
+    for(int i = 0; i < 8; i++) {
+        selectedControlPoint[i] = 0;
+        if (i < 3) {
+            selectedControlPoint[i-1] = 1;
+        } else if (i < 6) {
+            selectedControlPoint[i-2] = 1;
+        } else if (i < 9) {
+            selectedControlPoint[i-3] = 1;
+        } else {
+            selectedControlPoint[i-4] = 1;
+        }
+        mousePosX = anchors[i].x;
+        mousePosY = anchors[i].y;
+    }
+    
+    handleIndex = (handleIndex + 1) % 12;
+}
+
+
 void ofxBezierWarp::update() {
 	if (anchorControl == 0) {
 		// not bezier
