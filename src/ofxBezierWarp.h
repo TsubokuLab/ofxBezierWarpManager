@@ -33,11 +33,14 @@ public:
 		gridRes = 0;
 		prev_gridRes = 0;
 	}
+    
+    int handleIndex = 0;
 	
     void setup(ofFbo* _fbo);
 	void update(); // if you need
 	void draw();
 	
+    void nextHandle();
     void resetAnchors();
 	void save();
 	void load();

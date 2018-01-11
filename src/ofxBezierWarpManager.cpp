@@ -31,6 +31,13 @@ void ofxBezierWarpManager::draw(){
     }
 }
 
+void ofxBezierWarpManager::nextHandle(){
+    // draw bezier
+    for (int i = 0; i < bezierList.size(); i++) {
+        bezierList[i].nextHandle();
+    }
+}
+
 //--------------------------------------------------------------
 void ofxBezierWarpManager::keyPressed(int key){
     for( int i = 0; i < bezierList.size(); i++){
